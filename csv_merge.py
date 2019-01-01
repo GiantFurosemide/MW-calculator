@@ -9,12 +9,14 @@ you should use a directory path and give it to def make_it_dict(file_path) then 
 
 
 def show_all(file_path):
-    files_name_list = os.listdir(file_path)  # list all file/directory below this path
+    files_name = os.listdir(file_path)  # list all file/directory below this path
     file_path_list = []  # make a list to save all files we got beneath
-
-    for fi in files_name_list:
-        full_path = os.path.join(file_path, fi)
-        file_path_list.append(full_path)
+    files_name_list = []
+    for fi in files_name:
+        if "csv" in fi or "CSV" in fi:
+            full_path = os.path.join(file_path, fi)
+            file_path_list.append(full_path)
+            files_name_list.append(fi)
     return files_name_list, file_path_list
 
 
@@ -29,7 +31,7 @@ def return_peak(file_name):
         try:
             a = next(reader)
         except UnicodeError:
-            peak_height_list.append('exit code 1')
+            peak_height_list.append(' ')
         else:
             for rows in reader:
                 row_split_list.append(rows[0].split('\t'))
@@ -37,10 +39,11 @@ def return_peak(file_name):
             for i in row_split_list:
                 peak_height_list.append(float(i[1]))
 
-    return peak_height_list
+    return tuple(peak_height_list)
 
 
 def make_it_dict(dir_path):
+    # return a dict of key:file name str ; value: peak float list
     files_name_list, file_path_list = show_all(dir_path)
     peak_list = []
     for files_path in file_path_list:
@@ -58,4 +61,10 @@ if __name__ == '__main__':
 
     c = make_it_dict(file_path)
 
-    print(b)
+    print(list(b))
+    print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+    a = ['10115']
+    a += b
+    d = []
+    d.append(a)
+    print(d)
